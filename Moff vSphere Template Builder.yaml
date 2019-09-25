@@ -1,0 +1,75 @@
+---
+project: VNF-Primary
+kind: PIPELINE
+name: Moff vSphere Template Builder
+enabled: false
+description: Ubuntu 18 - Packer Automated Build
+tags: [
+  packer,
+  os,
+  template]
+concurrency: 10
+ciWorkspace:
+  endpoint: ''
+  image: ''
+  registry: ''
+  path: ''
+  cache:
+  - ''
+stageOrder:
+- Build
+- Clean
+stages:
+  Build:
+    taskOrder:
+    - Build Deployment
+    tasks:
+      Build Deployment:
+        type: Blueprint
+        input:
+          blueprint: Moff vSphere Template Builder
+          filepath: ''
+          action: CreateDeployment
+          deploymentName: Moff - Ubuntu 18 - Packer Automated Build
+          version: '1'
+          parameters: {
+            host: fill-in,
+            folder: fill-in,
+            cluster: fill-in,
+            network: fill-in,
+            password: fill-in,
+            username: fill-in,
+            datastore: fill-in,
+            ssh_password: fill-in,
+            ssh_username: fill-in,
+            vcenter_server: fill-in
+          }
+  Clean:
+    taskOrder:
+    - Delete Builder
+    tasks:
+      Delete Builder:
+        type: Blueprint
+        input:
+          _deploymentFlag: false
+          action: DeleteDeployment
+          deploymentName: ${Build.Build Deployment.output.deploymentName}
+notifications:
+  email:
+  - stage: Build
+    subject: Ubuntu 18 Build Completed
+    task: Build Deployment
+    endpoint: Codestream-Default-Email
+    body: We have completed the build with the following deployment name in Cloud Assembly - ${Build.Build
+      Deployment.output.deploymentName}
+    event: SUCCESS
+    to:
+    - hernandezf@vmware.com
+  - stage: Clean
+    subject: Builder Removed
+    task: Delete Builder
+    endpoint: Codestream-Default-Email
+    body: Builder Removed
+    event: SUCCESS
+    to:
+    - hernandezf@vmware.com
