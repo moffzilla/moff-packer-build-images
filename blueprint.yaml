@@ -1,5 +1,5 @@
 formatVersion: 1
-name: vSphere Template Builder
+name: Moff vSphere Template Builder
 version: 1
 inputs:
   vcenter_server:
@@ -42,8 +42,8 @@ resources:
         phoneHomeFailOnTimeout: true
         phoneHomeShouldWait: true
         phoneHomeTimeoutSeconds: 1000
-      image: ubuntu
-      flavor: medium
+      image: OAI-Base-Image
+      flavor: OAI-R4-Medium
       cloudConfig: |
         #cloud-config
         package_update: true
@@ -72,8 +72,8 @@ resources:
           - chmod +x packer && mv packer /bin/packer
           - wget https://github.com/jetbrains-infra/packer-builder-vsphere/releases/download/v2.3/packer-builder-vsphere-iso.linux
           - chmod +x packer-builder-vsphere-iso.linux
-          - git clone -b cas-blueprint https://github.com/codyde/packer-vsphere-builds
-          - mv packer-vsphere-builds/ubuntu-18/* /
+          - git clone -b cas-blueprint https://github.com/moffzilla/moff-packer-build-images
+          - mv moff-packer-build-images/* /
           - packer build -force -var-file variables.json ubuntu-18.json
       constraints:
-        - tag: 'env:vsphere'
+        - tag: 'cloud:vsphere'
