@@ -1,4 +1,4 @@
-project: Lab
+project: VNF-Primary
 kind: PIPELINE
 name: Moff vSphere Template Builder
 enabled: true
