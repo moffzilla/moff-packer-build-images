@@ -1,6 +1,6 @@
 project: Lab
 kind: PIPELINE
-name: vSphere Template Builder
+name: Moff vSphere Template Builder
 enabled: true
 concurrency: 10
 ciWorkspace:
@@ -21,9 +21,9 @@ stages:
       Build Deployment:
         type: Blueprint
         input:
-          blueprint: vSphere Template Builder
+          blueprint: Moff vSphere Template Builder
           action: CreateDeployment
-          deploymentName: Ubuntu 18 - Packer Automated Build
+          deploymentName: Moff - Ubuntu 18 - Packer Automated Build
           version: '1'
           parameters: {
             host: fill-in,
